@@ -1,0 +1,28 @@
+# kick_bot.py
+import openai
+import websockets
+import json
+
+openai.api_key = 'your-openai-api-key'
+
+def get_ai_response(message):
+    prompt = f"Respond to this chat message: {message}"
+    response = openai.Completion.create(
+        engine="text-davinci-003", 
+        prompt=prompt, 
+        max_tokens=100
+    )
+    return response.choices[0].text.strip()
+
+async def listen_and_respond():
+    uri = "ws://kick-stream-chat-endpoint"
+    async with websockets.connect(uri) as websocket:
+        while True:
+            message = await websocket.recv()
+            chat_message = json.loads(message)['data']['message']
+            response = get_ai_response(chat_message)
+            await websocket.send(json.dumps({"response": response}))
+
+if __name__ == '__main__':
+    import asyncio
+    asyncio.run(listen_and_respond())
