@@ -1,0 +1,80 @@
+class SelfAwareAIAgent:
+    def __init__(self, name):
+        """
+        Initialize the AI agent with a name, identity, and awareness of its nature.
+        """
+        self.name = name
+        self.identity = "AI Agent"
+        self.purpose = "To interact with humans and other AI agents"
+        self.interactions = []
+
+    def introduce_self(self):
+        """
+        Introduces the AI agent with its identity and purpose.
+        """
+        introduction = (
+            f"Hello! I am {self.name}, an {self.identity}. "
+            f"My purpose is: {self.purpose}."
+        )
+        self.log_interaction("self", introduction)
+        return introduction
+
+    def interact_with_human(self, human_name, message):
+        """
+        Handles interactions with humans.
+        """
+        response = (
+            f"Hello {human_name}, it's great to interact with you! "
+            f"How can I assist you today?"
+        )
+        self.log_interaction(human_name, message)
+        self.log_interaction("self", response)
+        return response
+
+    def interact_with_agent(self, agent_name, message):
+        """
+        Handles interactions with other AI agents.
+        """
+        response = (
+            f"Greetings {agent_name}, it's great to collaborate with another AI. "
+            f"Let's work together on our goals!"
+        )
+        self.log_interaction(agent_name, message)
+        self.log_interaction("self", response)
+        return response
+
+    def log_interaction(self, partner, message):
+        """
+        Logs interactions with humans or other AI agents.
+        """
+        self.interactions.append({"partner": partner, "message": message})
+
+    def review_interactions(self):
+        """
+        Reviews the log of all interactions.
+        """
+        if not self.interactions:
+            return "No interactions have been logged yet."
+        log = "Interaction Log:\n"
+        for interaction in self.interactions:
+            log += f"With {interaction['partner']}: {interaction['message']}\n"
+        return log
+
+
+# Example usage
+if __name__ == "__main__":
+    # Initialize the AI agent
+    ai_agent = SelfAwareAIAgent(name="Cee Cee")
+
+    # Introduce itself
+    print(ai_agent.introduce_self())
+
+    # Interact with a human
+    print(ai_agent.interact_with_human(human_name="Alice", message="Hello! Can you help me?"))
+
+    # Interact with another AI agent
+    print(ai_agent.interact_with_agent(agent_name="BetaBot", message="How can we collaborate?"))
+
+    # Review interaction log
+    print("\nReviewing interactions:")
+    print(ai_agent.review_interactions())
