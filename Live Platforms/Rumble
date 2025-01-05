@@ -1,0 +1,30 @@
+# rumble_bot.py
+import openai
+from bs4 import BeautifulSoup
+import requests
+
+openai.api_key = 'your-openai-api-key'
+RUMBLE_VIDEO_URL = 'https://rumble.com/your-video-url'
+
+def get_ai_response(message):
+    prompt = f"Respond to this chat message: {message}"
+    response = openai.Completion.create(
+        engine="text-davinci-003", 
+        prompt=prompt, 
+        max_tokens=100
+    )
+    return response.choices[0].text.strip()
+
+def listen_and_respond():
+    response = requests.get(RUMBLE_VIDEO_URL)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    chat_messages = soup.find_all('div', {'class': 'chat-message'})
+    
+    for message in chat_messages:
+        text = message.get_text()
+        response_text = get_ai_response(text)
+        # Assuming there's a way to send messages back
+        send_message_to_rumble(response_text)
+
+if __name__ == '__main__':
+    listen_and_respond()
