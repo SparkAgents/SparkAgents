@@ -1,0 +1,43 @@
+import random
+
+class AI_Agent:
+    def __init__(self, name=None):
+        if name:
+            self.name = name
+        else:
+            self.name = self.generate_name()
+
+    def generate_name(self):
+        first_names = ["Alpha", "Echo", "Nova", "Sigma", "Zeta", "Vega"]
+        last_names = ["X", "Omen", "Quantum", "Nebula", "Horizon", "Core"]
+        return f"{random.choice(first_names)}-{random.choice(last_names)}"
+
+    def introduce(self):
+        return f"Hello, my name is {self.name}."
+
+class AI_Agent_Creator:
+    def __init__(self):
+        self.agents = []
+
+    def create_agent(self, name=None):
+        new_agent = AI_Agent(name)
+        self.agents.append(new_agent)
+        return new_agent
+
+    def list_agents(self):
+        return [agent.name for agent in self.agents]
+
+# Example usage
+agent_creator = AI_Agent_Creator()
+
+# Create the main AI agent
+main_agent = agent_creator.create_agent("Main-Agent-001")
+print(main_agent.introduce())
+
+# Create 3 other agents
+new_agents = [agent_creator.create_agent() for _ in range(3)]
+for agent in new_agents:
+    print(agent.introduce())
+
+# List all created agents
+print("All created agents:", agent_creator.list_agents())
