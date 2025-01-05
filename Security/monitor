@@ -1,0 +1,47 @@
+{
+  "agent_name": "GuardianAI",
+  "protection_config": {
+    "authentication": {
+      "enabled": true,
+      "required_role": "admin",
+      "security_key": "your_secure_key_here",
+      "key_expiration": "2025-01-01T00:00:00Z"
+    },
+    "monitoring": {
+      "enabled": true,
+      "attack_patterns": [
+        "brute_force",
+        "SQL_injection",
+        "DDoS",
+        "unauthorized_access",
+        "malicious_script_execution"
+      ],
+      "alert_threshold": 5,
+      "log_file": "/path/to/logfile.log"
+    },
+    "response": {
+      "enabled": true,
+      "actions": [
+        "block_ip",
+        "throttle_requests",
+        "alert_admin",
+        "terminate_session"
+      ]
+    },
+    "rate_limiting": {
+      "enabled": true,
+      "max_requests_per_minute": 100,
+      "max_requests_per_ip": 50
+    },
+    "self_healing": {
+      "enabled": true,
+      "auto_restart": true,
+      "grace_period": 300
+    },
+    "data_encryption": {
+      "enabled": true,
+      "encryption_algorithm": "AES-256",
+      "key_rotation_interval": "30 days"
+    }
+  }
+}
