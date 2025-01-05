@@ -1,0 +1,38 @@
+# youtube_bot.py
+import openai
+from googleapiclient.discovery import build
+from google_auth_oauthlib.flow import InstalledAppFlow
+
+openai.api_key = 'your-openai-api-key'
+
+# Set up YouTube API
+API_KEY = 'your-youtube-api-key'
+YOUTUBE_CHANNEL_ID = 'your-youtube-channel-id'
+
+youtube = build('youtube', 'v3', developerKey=API_KEY)
+
+def get_ai_response(message):
+    prompt = f"Respond to this chat message: {message}"
+    response = openai.Completion.create(
+        engine="text-davinci-003", 
+        prompt=prompt, 
+        max_tokens=100
+    )
+    return response.choices[0].text.strip()
+
+def listen_and_respond():
+    request = youtube.liveChatMessages().list(
+        liveChatId=YOUTUBE_CHANNEL_ID,
+        part='snippet'
+    )
+    response = request.execute()
+    for item in response['items']:
+        message = item['snippet']['displayMessage']
+        response_text = get_ai_response(message)
+        youtube.liveChatMessages().insert(
+            part="snippet",
+            body={"snippet": {"liveChatId": YOUTUBE_CHANNEL_ID, "type": "textMessageEvent", "textMessageDetails": {"messageText": response_text}}}
+        ).execute()
+
+if __name__ == '__main__':
+    listen_and_respond()
