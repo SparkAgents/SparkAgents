@@ -1,0 +1,46 @@
+{
+  "sourceAgent": {
+    "id": "Agent001",
+    "name": "AlphaAI",
+    "capabilities": ["text-processing", "data-analysis", "collaboration"],
+    "sharingPermissions": {
+      "allowedEntities": ["Agent002", "Agent003"],
+      "restrictedData": ["privateKeys", "userSensitiveData"]
+    }
+  },
+  "targetAgent": {
+    "id": "Agent002",
+    "name": "BetaAI",
+    "capabilities": ["data-storage", "model-training"]
+  },
+  "dataPayload": {
+    "dataType": "structured",
+    "description": "Dataset for collaborative training",
+    "timestamp": "2025-01-04T12:00:00Z",
+    "content": {
+      "dataset": {
+        "columns": ["user_id", "age", "preferences"],
+        "rows": [
+          { "user_id": 1, "age": 25, "preferences": ["music", "sports"] },
+          { "user_id": 2, "age": 30, "preferences": ["movies", "reading"] }
+        ]
+      }
+    }
+  },
+  "interactionProtocol": {
+    "protocolVersion": "1.0",
+    "encryption": {
+      "enabled": true,
+      "method": "AES-256"
+    },
+    "authentication": {
+      "method": "token-based",
+      "token": "abc123xyz789"
+    }
+  },
+  "logging": {
+    "enabled": true,
+    "logLevel": "info",
+    "logFile": "data_sharing.log"
+  }
+}
