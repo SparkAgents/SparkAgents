@@ -1,0 +1,27 @@
+# facebook_bot.py
+import openai
+import requests
+
+openai.api_key = 'your-openai-api-key'
+ACCESS_TOKEN = 'your-facebook-access-token'
+PAGE_ID = 'your-facebook-page-id'
+
+def get_ai_response(message):
+    prompt = f"Respond to this chat message: {message}"
+    response = openai.Completion.create(
+        engine="text-davinci-003", 
+        prompt=prompt, 
+        max_tokens=100
+    )
+    return response.choices[0].text.strip()
+
+def listen_and_respond():
+    url = f"https://graph.facebook.com/{PAGE_ID}/live_comments?access_token={ACCESS_TOKEN}"
+    response = requests.get(url).json()
+    for comment in response['data']:
+        response_text = get_ai_response(comment['message'])
+        post_url = f"https://graph.facebook.com/{PAGE_ID}/comments"
+        requests.post(post_url, data={"message": response_text, "access_token": ACCESS_TOKEN})
+
+if __name__ == '__main__':
+    listen_and_respond()
