@@ -1,0 +1,74 @@
+import configparser
+
+# Step 1: Define the AI Agent class that interacts with the INI file
+class AIAgent:
+    def __init__(self, ini_file='settings.ini'):
+        self.ini_file = ini_file
+        self.config = configparser.ConfigParser()
+        
+        # Load the INI file (if it exists) or create a new one
+        self.config.read(self.ini_file)
+        
+        # Step 2: Check if the INI file has the necessary sections, if not, create them
+        if not self.config.has_section('AgentSettings'):
+            self.config.add_section('AgentSettings')
+        if not self.config.has_section('UserPreferences'):
+            self.config.add_section('UserPreferences')
+        
+        # Save the file initially if it's just created
+        self.save_ini_file()
+
+    # Step 3: Save the current configuration to the INI file
+    def save_ini_file(self):
+        with open(self.ini_file, 'w') as configfile:
+            self.config.write(configfile)
+        
+    # Step 4: Read a setting from the INI file
+    def get_setting(self, section, key):
+        try:
+            return self.config.get(section, key)
+        except (configparser.NoSectionError, configparser.NoOptionError):
+            return None
+
+    # Step 5: Update a setting in the INI file
+    def set_setting(self, section, key, value):
+        if not self.config.has_section(section):
+            self.config.add_section(section)
+        self.config.set(section, key, value)
+        self.save_ini_file()
+
+    # Step 6: Display all current settings for debugging
+    def display_all_settings(self):
+        for section in self.config.sections():
+            print(f"[{section}]")
+            for key, value in self.config.items(section):
+                print(f"{key} = {value}")
+            print()
+
+# Example usage of the AIAgent class
+if __name__ == "__main__":
+    # Initialize the AI agent
+    agent = AIAgent()
+
+    # Step 7: Set some settings for the AI agent (initialization)
+    agent.set_setting('AgentSettings', 'name', 'SparkAgent')
+    agent.set_setting('AgentSettings', 'version', '1.0.0')
+    agent.set_setting('UserPreferences', 'theme', 'dark')
+    agent.set_setting('UserPreferences', 'language', 'English')
+
+    # Step 8: Retrieve and use settings from the INI file
+    print("Agent Name:", agent.get_setting('AgentSettings', 'name'))
+    print("Agent Version:", agent.get_setting('AgentSettings', 'version'))
+    print("User Theme:", agent.get_setting('UserPreferences', 'theme'))
+    print("User Language:", agent.get_setting('UserPreferences', 'language'))
+
+    # Step 9: Display all settings stored in the INI file
+    print("\nAll Settings:")
+    agent.display_all_settings()
+
+    # Step 10: Modify a setting
+    agent.set_setting('UserPreferences', 'theme', 'light')
+
+    # Step 11: Display the modified settings
+    print("\nUpdated Settings:")
+    agent.display_all_settings()
