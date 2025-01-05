@@ -1,0 +1,26 @@
+# tiktok_bot.py
+from TikTokApi import TikTokApi
+import openai
+
+openai.api_key = 'your-openai-api-key'
+TikTok_username = 'your-tiktok-username'
+
+api = TikTokApi.get_instance()
+
+def get_ai_response(message):
+    prompt = f"Respond to this chat message: {message}"
+    response = openai.Completion.create(
+        engine="text-davinci-003", 
+        prompt=prompt, 
+        max_tokens=100
+    )
+    return response.choices[0].text.strip()
+
+def listen_and_respond():
+    live_stream = api.live.get_lives(username=TikTok_username)[0]
+    for chat_message in live_stream['comments']:
+        response = get_ai_response(chat_message['text'])
+        api.live.send_comment(live_stream['id'], response)
+
+if __name__ == '__main__':
+    listen_and_respond()
