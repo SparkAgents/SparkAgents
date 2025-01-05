@@ -1,0 +1,81 @@
+import json
+import os
+import random
+import time
+import hashlib
+from cryptography.fernet import Fernet
+import shutil
+import logging
+
+class SecureAI_Agent:
+    def __init__(self, name="Agent001"):
+        self.name = name
+        self.sensitive_data = {
+            "name": self.name,
+            "system_info": "This is sensitive system data.",
+            "logs": [],
+        }
+        self.key = self.generate_encryption_key()
+        self.secure_file = f"{self.name}_data.enc"
+        self.log_file = f"{self.name}_log.txt"
+        self.alert_threshold = 3
+        self.failed_attempts = 0
+
+        logging.basicConfig(filename=self.log_file, level=logging.INFO)
+    
+    def generate_encryption_key(self):
+        """Generates a new encryption key using the Fernet algorithm."""
+        return Fernet.generate_key()
+    
+    def encrypt_data(self, data):
+        """Encrypt sensitive data before saving to file."""
+        f = Fernet(self.key)
+        encrypted_data = f.encrypt(data.encode())
+        return encrypted_data
+    
+    def write_secure_file(self):
+        """Write encrypted data into a secure file."""
+        encrypted_data = self.encrypt_data(json.dumps(self.sensitive_data))
+        with open(self.secure_file, 'wb') as file:
+            file.write(encrypted_data)
+        logging.info(f"Sensitive data encrypted and written to {self.secure_file}")
+    
+    def self_destruct(self):
+        """Self-destruct mechanism triggered on suspicion of a hack."""
+        logging.warning("Suspicious activity detected! Initiating self-destruct.")
+        # Delete the secure file and log file
+        if os.path.exists(self.secure_file):
+            os.remove(self.secure_file)
+        if os.path.exists(self.log_file):
+            os.remove(self.log_file)
+        # Delete the agent itself (This simulates self-destruction)
+        print("The AI agent has self-destructed to protect its data.")
+        os._exit(0)
+
+    def detect_hacking_attempt(self, attack_type):
+        """Detects potential hacking attempts and triggers self-destruct if needed."""
+        self.failed_attempts += 1
+        if self.failed_attempts >= self.alert_threshold:
+            self.self_destruct()
+        logging.warning(f"Failed attempt detected: {attack_type}. Total failed attempts: {self.failed_attempts}")
+        
+    def simulate_hacking_attempt(self):
+        """Simulates a hacking attempt."""
+        # Simulate random hacking attempt detection (for demonstration)
+        attack_types = ["brute_force", "unauthorized_access", "malicious_script_execution"]
+        attack = random.choice(attack_types)
+        self.detect_hacking_attempt(attack)
+    
+    def run(self):
+        """Main function to run the AI agent and handle the logic."""
+        self.write_secure_file()
+        
+        # Simulate behavior and random hacking attempts over time
+        for _ in range(5):
+            time.sleep(2)  # Simulate the passage of time
+            self.simulate_hacking_attempt()
+
+# Run the AI Agent
+if __name__ == "__main__":
+    agent = SecureAI_Agent("GuardianAI")
+    agent.run()
