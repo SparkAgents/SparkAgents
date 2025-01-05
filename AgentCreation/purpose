@@ -1,0 +1,53 @@
+class AIAgent:
+    def __init__(self, name):
+        self.name = name
+        self.purpose = "General-purpose assistant"
+        self.capabilities = []
+
+    def define_purpose(self, purpose):
+        """
+        Defines the purpose of the AI agent.
+        """
+        self.purpose = purpose
+        return f"The purpose of {self.name} has been set to: '{self.purpose}'"
+
+    def add_capability(self, capability):
+        """
+        Adds a capability to the AI agent's list of skills.
+        """
+        self.capabilities.append(capability)
+        return f"Added capability: '{capability}'"
+
+    def describe_purpose(self):
+        """
+        Provides a description of the AI agent's purpose and capabilities.
+        """
+        if self.capabilities:
+            capabilities_str = "\n".join(f"- {cap}" for cap in self.capabilities)
+            description = (
+                f"{self.name} is designed for the purpose of '{self.purpose}'.\n"
+                f"It is capable of:\n{capabilities_str}"
+            )
+        else:
+            description = (
+                f"{self.name} is designed for the purpose of '{self.purpose}', but no specific capabilities have been defined yet."
+            )
+        return description
+
+
+# Example usage
+if __name__ == "__main__":
+    # Initialize the AI agent
+    ai_agent = AIAgent(name="Cee Cee")
+
+    # Define the purpose of the agent
+    print(ai_agent.define_purpose("Diagnosing patients remotely using AI"))
+
+    # Add capabilities
+    print(ai_agent.add_capability("Ask patients health-related questions"))
+    print(ai_agent.add_capability("Analyze live video for symptoms"))
+    print(ai_agent.add_capability("Record and store patient data securely"))
+
+    # Describe the purpose and capabilities
+    print("\nPurpose and Capabilities:")
+    print(ai_agent.describe_purpose())
