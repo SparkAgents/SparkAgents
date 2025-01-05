@@ -1,0 +1,86 @@
+class IntelligentAgent:
+    def __init__(self, name):
+        """
+        Initialize the AI agent with its name and awareness of its identity.
+        """
+        self.name = name
+        self.identity = "AI Agent"
+        self.interactions = []
+
+    def determine_entity_type(self, entity_name):
+        """
+        Determines if the entity being interacted with is a human or another AI.
+        Assumes that AI agents have 'Bot' or 'AI' in their name.
+        """
+        if "bot" in entity_name.lower() or "ai" in entity_name.lower():
+            return "AI"
+        return "Human"
+
+    def interact(self, entity_name, message):
+        """
+        Handles interactions differently based on whether the entity is a human or another AI agent.
+        """
+        entity_type = self.determine_entity_type(entity_name)
+
+        if entity_type == "Human":
+            response = self.respond_to_human(entity_name, message)
+        else:
+            response = self.respond_to_ai(entity_name, message)
+
+        # Log interaction
+        self.log_interaction(entity_name, message, response, entity_type)
+        return response
+
+    def respond_to_human(self, human_name, message):
+        """
+        Generates a response when interacting with a human.
+        """
+        return f"Hello {human_name}, it's great to hear from you! How can I assist you with '{message}'?"
+
+    def respond_to_ai(self, ai_name, message):
+        """
+        Generates a response when interacting with another AI agent.
+        """
+        return f"Greetings {ai_name}, I see you're another AI! Let's collaborate on '{message}' to achieve our shared goals."
+
+    def log_interaction(self, entity_name, message, response, entity_type):
+        """
+        Logs the interaction details.
+        """
+        self.interactions.append({
+            "entity_name": entity_name,
+            "entity_type": entity_type,
+            "message": message,
+            "response": response
+        })
+
+    def review_interactions(self):
+        """
+        Reviews the interaction log.
+        """
+        if not self.interactions:
+            return "No interactions logged yet."
+
+        log = "Interaction Log:\n"
+        for interaction in self.interactions:
+            log += (
+                f"[{interaction['entity_type']}] {interaction['entity_name']} said: '{interaction['message']}'\n"
+                f"[AI] Response: '{interaction['response']}'\n"
+            )
+        return log
+
+
+# Example usage
+if __name__ == "__main__":
+    # Initialize the AI agent
+    ai_agent = IntelligentAgent(name="Cee Cee")
+
+    # Interact with a human
+    print(ai_agent.interact("Alice", "Can you help me schedule an appointment?"))
+
+    # Interact with another AI agent
+    print(ai_agent.interact("BetaBot", "Share your processing power for a task."))
+
+    # Review interaction log
+    print("\nReviewing interactions:")
+    print(ai_agent.review_interactions())
