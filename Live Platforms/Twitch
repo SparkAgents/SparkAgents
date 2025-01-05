@@ -1,0 +1,45 @@
+import openai
+from twitchio import Client, Message
+
+# Set up OpenAI API
+openai.api_key = 'your-openai-api-key'
+
+# Define your Twitch bot's token and channel
+Twitch_token = 'your-twitch-oauth-token'
+Twitch_channel = 'your-twitch-channel-name'
+
+# Set up your Twitch bot client
+class Bot(Client):
+    async def event_ready(self):
+        print(f'Logged in as | {self.nick}')
+        channel = self.get_channel(Twitch_channel)
+        await channel.send("Hello, I'm your AI assistant! Let's chat!")
+
+    async def event_message(self, message: Message):
+        # Ignore messages from the bot itself
+        if message.author.name.lower() == self.nick.lower():
+            return
+
+        print(f"Message from {message.author.name}: {message.content}")
+
+        # Generate AI response
+        response = get_ai_response(message.content)
+
+        # Send the response back to Twitch chat
+        channel = self.get_channel(Twitch_channel)
+        await channel.send(response)
+
+# Function to interact with OpenAI's GPT model
+def get_ai_response(message):
+    prompt = f"Respond to this chat message: {message}"
+    response = openai.Completion.create(
+        engine="text-davinci-003", 
+        prompt=prompt, 
+        max_tokens=100
+    )
+    return response.choices[0].text.strip()
+
+# Start the bot
+if __name__ == '__main__':
+    bot = Bot.from_client_id('your-twitch-client-id', token=Twitch_token)
+    bot.run()
