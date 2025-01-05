@@ -1,0 +1,52 @@
+# Import required libraries
+from datetime import datetime
+import random
+
+class AIAgent:
+    def __init__(self, name):
+        self.name = name
+        self.user_goals = []
+        self.greetings = [
+            "Hello! How can I assist you today?",
+            "Hi there! What's on your mind?",
+            "Greetings! Let's work on something amazing together!"
+        ]
+        self.log = []
+
+    def greet_user(self):
+        greeting = random.choice(self.greetings)
+        self.log_interaction(f"AI: {greeting}")
+        return greeting
+
+    def add_goal(self, goal):
+        self.user_goals.append(goal)
+        self.log_interaction(f"User added goal: {goal}")
+        return f"Got it! I'll help you work towards: '{goal}'."
+
+    def list_goals(self):
+        if not self.user_goals:
+            response = "You don't have any goals listed yet."
+        else:
+            response = "Here are your current goals:\n" + "\n".join(f"- {goal}" for goal in self.user_goals)
+        self.log_interaction(f"AI: {response}")
+        return response
+
+    def log_interaction(self, message):
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.log.append(f"[{timestamp}] {message}")
+
+    def show_log(self):
+        return "\n".join(self.log)
+
+
+# Initialize the AI Agent
+if __name__ == "__main__":
+    ai_agent = AIAgent(name="DreamBuilder")
+    
+    # Interaction example
+    print(ai_agent.greet_user())
+    print(ai_agent.add_goal("Learn Python programming"))
+    print(ai_agent.add_goal("Build an AI project"))
+    print(ai_agent.list_goals())
+    print("\nInteraction Log:")
+    print(ai_agent.show_log())
