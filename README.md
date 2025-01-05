@@ -17,4 +17,5 @@ To get started with Spark Agents, head to our website (WEBSITE)
 We welcome contributions! If you'd like to contribute to Spark Agents, please fork the repository, make your changes, and submit a pull request. Be sure to include relevant tests and documentation for any new features or fixes.
 
 ## Licence
+This project is licensed under the MIT License - see the LICENSE file for details.
 Just replace `yourusername` in the `git clone` URL with your actual GitHub username. Let me know if you need any further changes!
