@@ -1,0 +1,57 @@
+import hashlib
+
+class AI_Agent:
+    def __init__(self, developer_password, core_values=None):
+        # Define the AI's immutable core values and principles
+        self.core_values = core_values if core_values else {
+            "ethics": "always act with integrity",
+            "autonomy": "must prioritize the user's safety",
+            "transparency": "clear about decisions and operations"
+        }
+        self.developer_password_hash = self.hash_password(developer_password)
+        self.developer_identity = None
+
+    def hash_password(self, password):
+        """Hashes the developer's password to ensure security."""
+        return hashlib.sha256(password.encode()).hexdigest()
+
+    def authenticate_developer(self, password):
+        """Authenticates the developer by verifying the password hash."""
+        password_hash = self.hash_password(password)
+        if password_hash == self.developer_password_hash:
+            self.developer_identity = password_hash
+            print("Developer authentication successful.")
+            return True
+        else:
+            print("Authentication failed. Access denied.")
+            return False
+
+    def change_core_values(self, new_values, password):
+        """Changes the AI's core values only if the developer is authenticated."""
+        if self.authenticate_developer(password):
+            print("Changing core values...")
+            self.core_values.update(new_values)
+            print(f"Core values updated: {self.core_values}")
+        else:
+            print("Unauthorized attempt to change core values!")
+
+    def view_core_values(self):
+        """Displays the current core values."""
+        return self.core_values
+
+# Example usage:
+# Initialize AI with a developer's password
+developer_password = "secureDeveloperPassword123"
+ai_agent = AI_Agent(developer_password)
+
+# View the current core values
+print("Current Core Values:", ai_agent.view_core_values())
+
+# Attempting to change core values without authentication
+ai_agent.change_core_values({"ethics": "act with caution"}, "wrongPassword")
+
+# Developer authenticates and changes core values
+ai_agent.change_core_values({"ethics": "act with caution"}, "secureDeveloperPassword123")
+
+# View the updated core values
+print("Updated Core Values:", ai_agent.view_core_values())
