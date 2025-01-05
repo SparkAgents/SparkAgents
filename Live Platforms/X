@@ -1,0 +1,27 @@
+# x_bot.py
+import tweepy
+import openai
+
+openai.api_key = 'your-openai-api-key'
+
+# Set up Twitter API keys
+client = tweepy.Client(bearer_token='your-bearer-token')
+
+class MyStream(tweepy.StreamingClient):
+    def on_tweet(self, tweet):
+        response = get_ai_response(tweet.text)
+        client.create_tweet(text=response, in_reply_to_tweet_id=tweet.id)
+
+def get_ai_response(message):
+    prompt = f"Respond to this chat message: {message}"
+    response = openai.Completion.create(
+        engine="text-davinci-003", 
+        prompt=prompt, 
+        max_tokens=100
+    )
+    return response.choices[0].text.strip()
+
+if __name__ == '__main__':
+    stream = MyStream(bearer_token='your-bearer-token')
+    stream.add_rules(tweepy.StreamRule("from:your-twitter-handle"))
+    stream.filter()
