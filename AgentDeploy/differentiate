@@ -84,3 +84,4 @@ if __name__ == "__main__":
     # Review interaction log
     print("\nReviewing interactions:")
     print(ai_agent.review_interactions())
+
