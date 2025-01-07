@@ -1,5 +1,5 @@
 # Spark Agents
-![image](https://github.com/user-attachments/assets/9a33ee1f-1cfe-4f4e-9fcb-61331221e04e)
+https://cdn.discordapp.com/attachments/1318753631322767410/1326021324673650728/Spark_Banner.png?ex=677de918&is=677c9798&hm=b8f926eb827c55aea691447765811cfe74b66b0559d6f92674407500ad45794f&
 
 Spark Agents is an AI agent deployment system designed to help you create and improve AI agents tailored to your exact needs. Whether it's automating tasks, assisting with projects, or optimizing workflows, Spark Agents is built to handle it all. The best part? It's fully customizable, made for you, by you.
 
