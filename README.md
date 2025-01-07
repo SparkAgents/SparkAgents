@@ -1,4 +1,5 @@
 # Spark Agents
+![image](https://github.com/user-attachments/assets/9a33ee1f-1cfe-4f4e-9fcb-61331221e04e)
 
 Spark Agents is an AI agent deployment system designed to help you create and improve AI agents tailored to your exact needs. Whether it's automating tasks, assisting with projects, or optimizing workflows, Spark Agents is built to handle it all. The best part? It's fully customizable, made for you, by you.
 
